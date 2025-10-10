@@ -16,7 +16,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JwtUtil {
     // Clave secreta segura (mínimo 32 caracteres)
     private static final String SECRET_KEY = "u8Qw1k2n3p4s5v6y7z8A9B0C1D2E3F4G5H6I7J8K9L0M1N2O";
-    private static final long EXPIRATION_TIME = 86400000; // 1 día en milisegundos
+    // Tiempo de expiración del token un mes (en milisegundos)
+    private static final long EXPIRATION_TIME = 30 * 24 * 60 * 60 * 1000L; // 30 días
 
     private final Key key;
 
