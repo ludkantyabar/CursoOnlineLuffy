@@ -8,6 +8,8 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.stereotype.Component;
 
+import com.dev.CursoOnline.model.RoleName;
+
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -35,6 +37,16 @@ public class JwtUtil {
                 .compact();
     }
 
+    public String generateToken(String username, RoleName roleName) {
+        return Jwts.builder()
+                .setSubject(username)
+                .claim("role", roleName.name())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
     public String extractUsername(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -42,6 +54,15 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    public String extractRole(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("role", String.class);
     }
 
     public boolean validateToken(String token) {
