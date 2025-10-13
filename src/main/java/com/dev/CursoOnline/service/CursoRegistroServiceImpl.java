@@ -33,4 +33,9 @@ public class CursoRegistroServiceImpl implements CursoRegistroService {
     public void eliminarCursoRegistro(Long id) {
         cursoRegistroRepository.deleteById(id);
     }
+
+    @Override
+    public List<CursoRegistro> buscarPorUsuarioId(Long usuarioId) {
+        return cursoRegistroRepository.findByUsuarioId(usuarioId);
+    }
 }

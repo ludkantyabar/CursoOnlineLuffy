@@ -34,4 +34,9 @@ public class CursoRegistroController {
     public void eliminarCursoRegistro(@PathVariable Long id) {
         cursoRegistroService.eliminarCursoRegistro(id);
     }
+
+    @GetMapping("/usuario/{usuarioId}")
+    public List<CursoRegistro> obtenerRegistrosPorUsuario(@PathVariable Long usuarioId) {
+        return cursoRegistroService.buscarPorUsuarioId(usuarioId);
+    }
 }
