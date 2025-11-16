@@ -1,6 +1,12 @@
 package com.dev.CursoOnline.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table (name = "roles")
@@ -14,7 +20,7 @@ public class Role {
     private RoleName roleName;
 
     // Nuevo campo para nombre del rol (String)
-    private String nombre;
+   
 
     // getters y setters
 
@@ -34,12 +40,6 @@ public class Role {
         this.roleName = roleName;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    
 
 }

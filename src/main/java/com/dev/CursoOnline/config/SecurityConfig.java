@@ -4,6 +4,7 @@ import com.dev.CursoOnline.security.JwtAuthenticationFilter;
 import com.dev.CursoOnline.security.JwtUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -30,8 +31,26 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+<<<<<<< HEAD
             .authorizeHttpRequests(authz -> authz
                 .anyRequest().permitAll()  // Permite todo (solo para desarrollo)
+=======
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/auth/**").permitAll()
+                // ADMIN puede acceder a todo
+                .requestMatchers("/usuarios/**", "/roles/**").hasRole("ADMIN")
+                // DOCENTE puede agregar y eliminar cursos (POST, DELETE)
+                .requestMatchers(HttpMethod.POST, "/cursos/**").hasAnyRole("ADMIN", "DOCENTE")
+                .requestMatchers(HttpMethod.DELETE, "/cursos/**").hasAnyRole("ADMIN", "DOCENTE")
+                // Solo ADMIN y DOCENTE pueden ver cursos (GET)
+                .requestMatchers(HttpMethod.GET, "/cursos/**").hasAnyRole("ADMIN", "DOCENTE")
+                // ESTUDIANTE puede registrar curso, ver y eliminar sus registros
+                .requestMatchers(HttpMethod.POST, "/cursoregistros/**").hasAnyRole("ADMIN", "ESTUDIANTE")
+                .requestMatchers(HttpMethod.GET, "/cursoregistros/**").hasAnyRole("ADMIN", "ESTUDIANTE")
+                .requestMatchers(HttpMethod.DELETE, "/cursoregistros/**").hasAnyRole("ADMIN", "ESTUDIANTE")
+                .anyRequest().authenticated()
+>>>>>>> 2979b9cd88b6497800b6ca1bda07208f13893570
             )
             .csrf(csrf -> csrf.disable())
             .cors(Customizer.withDefaults());

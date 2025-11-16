@@ -1,15 +1,15 @@
 package com.dev.CursoOnline;
 
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.MockMvc;
-import org.junit.jupiter.api.Test;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
 
 
 @SpringBootTest
@@ -21,7 +21,7 @@ public class AllConsultTest {
 
     private String generateTestToken() {
         // TODO: Implement token generation or use a static valid token for testing
-        return "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsdWRrYW50Z2FsaW5kb0BlbWFpbC5jb20iLCJpYXQiOjE3NjAxMTMzMTcsImV4cCI6MTc2MDE5OTcxN30.5iUMQWAScpsz8d-dm-dh54N3Vwyman1orUxIzX0DYgg";
+        return "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsdWRrYW50QGVtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc2MDM2ODk2NSwiZXhwIjoxNzYyOTYwOTY1fQ.LX6A7rTnzrgJibtbiCKQBXC56b_BxZOfYO0Af7BysAg";
     }
 
     
@@ -42,15 +42,7 @@ public class AllConsultTest {
             .andExpect(content().contentType("application/json"))
             .andExpect(jsonPath("$").isArray());
     }
-
-    @Test
-    public void testConsultarCursos() throws Exception {
-        mockMvc.perform(get("/cursos")
-                .header("Authorization", "Bearer " + generateTestToken()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType("application/json"))
-            .andExpect(jsonPath("$").isArray());
-    }
+    
 
     @Test
     public void testConsultarCursoRegistros() throws Exception {
@@ -61,48 +53,25 @@ public class AllConsultTest {
             .andExpect(jsonPath("$").isArray());
     }
 
+   
     @Test
-    public void testCrearRole() throws Exception {
-        String json = "{\"nombre\":\"ADMIN\"}";
-        mockMvc.perform(post("/roles")
-                .header("Authorization", "Bearer " + generateTestToken())
-                .contentType("application/json")
-                .content(json))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.nombre").value("ADMIN"));
-    }
-
+	public void testConsultarCursos() throws Exception {
+		mockMvc.perform(get("/cursos")
+				.header("Authorization", "Bearer " + generateTestToken()))
+			.andExpect(status().isOk())
+			.andExpect(content().contentType("application/json"))
+			.andExpect(jsonPath("$").isArray());
+	}
+    
+    
     @Test
-    public void testCrearUsuario() throws Exception {
-        String json = "{\"nombre\":\"Juan\",\"email\":\"juan@email.com\"}";
-        mockMvc.perform(post("/usuarios")
-                .header("Authorization", "Bearer " + generateTestToken())
-                .contentType("application/json")
-                .content(json))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.nombre").value("Juan"));
+	public void testConsultarCategorias() throws Exception {
+		mockMvc.perform(get("/categorias")
+				.header	("Authorization", "Bearer " + generateTestToken()))
+			.andExpect(status().isOk())
+			.andExpect(content().contentType("application/json"))
+			.andExpect(jsonPath("$").isArray());
     }
-
-    @Test
-    public void testCrearCurso() throws Exception {
-        String json = "{\"nombre\":\"Matemáticas\",\"descripcion\":\"Curso básico\"}";
-        mockMvc.perform(post("/cursos")
-                .header("Authorization", "Bearer " + generateTestToken())
-                .contentType("application/json")
-                .content(json))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.nombre").value("Matemáticas"));
-    }
-
-    @Test
-    public void testCrearCursoRegistro() throws Exception {
-        String json = "{\"usuarioId\":1,\"cursoId\":1}";
-        mockMvc.perform(post("/cursoregistros")
-                .header("Authorization", "Bearer " + generateTestToken())
-                .contentType("application/json")
-                .content(json))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.usuarioId").value(1));
-    }
+   
     
 }

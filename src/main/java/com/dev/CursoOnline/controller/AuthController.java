@@ -40,7 +40,7 @@ public class AuthController {
 
         Map<String, String> response = new HashMap<>();
         if (usuario != null && passwordEncoder.matches(password, usuario.getPassword())) {
-            String token = jwtUtil.generateToken(usuario.getEmail());
+            String token = jwtUtil.generateToken(usuario.getEmail(), usuario.getRole().getRoleName());
             response.put("token", token);
         } else {
             response.put("error", "Credenciales inválidas");

@@ -9,4 +9,5 @@ public interface CursoRegistroService {
     Optional<CursoRegistro> obtenerCursoRegistroPorId(Long id);
     List<CursoRegistro> listarCursoRegistros();
     void eliminarCursoRegistro(Long id);
+    List<CursoRegistro> buscarPorUsuarioId(Long usuarioId);
 }

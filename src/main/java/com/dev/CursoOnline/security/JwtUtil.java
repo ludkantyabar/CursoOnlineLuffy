@@ -8,6 +8,8 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.stereotype.Component;
 
+import com.dev.CursoOnline.model.RoleName;
+
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -16,7 +18,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JwtUtil {
     // Clave secreta segura (mínimo 32 caracteres)
     private static final String SECRET_KEY = "u8Qw1k2n3p4s5v6y7z8A9B0C1D2E3F4G5H6I7J8K9L0M1N2O";
-    private static final long EXPIRATION_TIME = 86400000; // 1 día en milisegundos
+    // Tiempo de expiración del token un mes (en milisegundos)
+    private static final long EXPIRATION_TIME = 30 * 24 * 60 * 60 * 1000L; // 30 días
 
     private final Key key;
 
@@ -34,6 +37,16 @@ public class JwtUtil {
                 .compact();
     }
 
+    public String generateToken(String username, RoleName roleName) {
+        return Jwts.builder()
+                .setSubject(username)
+                .claim("role", roleName.name())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
     public String extractUsername(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -41,6 +54,15 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    public String extractRole(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("role", String.class);
     }
 
     public boolean validateToken(String token) {
