@@ -1,5 +1,16 @@
 package com.dev.CursoOnline.controller;
 
+<<<<<<< HEAD
+=======
+import com.dev.CursoOnline.model.CursoRegistro;
+import com.dev.CursoOnline.service.CursoRegistroService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+>>>>>>> developer
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +34,10 @@ public class CursoRegistroController {
     private CursoRegistroService cursoRegistroService;
 
     @PostMapping
-    public CursoRegistro crearCursoRegistro(@RequestBody CursoRegistro cursoRegistro) {
+    public CursoRegistro crearCursoRegistro(@Valid @RequestBody CursoRegistro cursoRegistro) {
+        if (cursoRegistro.getCursoId() == null || cursoRegistro.getUsuarioId() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Curso ID y Usuario ID son obligatorios");
+        }
         return cursoRegistroService.guardarCursoRegistro(cursoRegistro);
     }
 
@@ -38,13 +52,16 @@ public class CursoRegistroController {
     }
 
     @DeleteMapping("/{id}")
-    public void eliminarCursoRegistro(@PathVariable Long id) {
+    public void eliminarCursoRegistro(@PathVariable("id") Long id) {
         cursoRegistroService.eliminarCursoRegistro(id);
     }
+<<<<<<< HEAD
 
     @GetMapping("/usuario/{usuarioId}")
     public List<CursoRegistro> obtenerRegistrosPorUsuario(@PathVariable("usuarioId") Long usuarioId) {
         return cursoRegistroService.buscarPorUsuarioId(usuarioId);
     }
 
+=======
+>>>>>>> developer
 }

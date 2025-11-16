@@ -57,7 +57,12 @@ public class CursoController {
     }
 
     @DeleteMapping("/{id}")
-    public void eliminarCurso(@PathVariable("id") Long id) {
-        cursoService.eliminarCurso(id);
+    public ResponseEntity<Void> eliminarCurso(@PathVariable("id") Long id) {
+        try {
+            cursoService.eliminarCurso(id);
+            return ResponseEntity.noContent().build(); // Respuesta 204 No Content si se elimina correctamente
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build(); // Respuesta 500 Internal Server Error si ocurre una excepción
+        }
     }
 }

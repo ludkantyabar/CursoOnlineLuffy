@@ -33,15 +33,18 @@ public class AuthController {
     private RoleRepository roleRepository;
 
     @PostMapping("/login")
-    public Map<String, String> login(@RequestBody Map<String, String> loginData) {
+    public Map<String, Object> login(@RequestBody Map<String, String> loginData) {
         String email = loginData.get("email");
         String password = loginData.get("password");
         Usuario usuario = usuarioService.obtenerPorEmail(email);
 
-        Map<String, String> response = new HashMap<>();
+        Map<String, Object> response = new HashMap<>();
         if (usuario != null && passwordEncoder.matches(password, usuario.getPassword())) {
             String token = jwtUtil.generateToken(usuario.getEmail(), usuario.getRole().getRoleName());
             response.put("token", token);
+            response.put("userId", usuario.getId());
+            response.put("userName", usuario.getNombre());
+            response.put("userEmail", usuario.getEmail());
         } else {
             response.put("error", "Credenciales inválidas");
         }
